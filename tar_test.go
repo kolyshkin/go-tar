@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"internal/testenv"
 	"io"
 	"io/ioutil"
 	"math"
@@ -260,7 +259,6 @@ func TestFileInfoHeaderDir(t *testing.T) {
 }
 
 func TestFileInfoHeaderSymlink(t *testing.T) {
-	testenv.MustHaveSymlink(t)
 
 	tmpdir, err := ioutil.TempDir("", "TestFileInfoHeaderSymlink")
 	if err != nil {
@@ -272,7 +270,7 @@ func TestFileInfoHeaderSymlink(t *testing.T) {
 	target := tmpdir
 	err = os.Symlink(target, link)
 	if err != nil {
-		t.Fatal(err)
+		t.Skipf("skipping test: cannot make symlinks: %v\n", err)
 	}
 	fi, err := os.Lstat(link)
 	if err != nil {
